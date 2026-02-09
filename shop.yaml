@@ -1,0 +1,59 @@
+# 1. The Coffee App
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: coffee-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: coffee
+  template:
+    metadata:
+      labels:
+        app: coffee
+    spec:
+      containers:
+      - name: coffee
+        image: nginxdemos/hello:plain-text # A simple image that says "Hello"
+---
+# 2. The Coffee Service (Internal Access)
+apiVersion: v1
+kind: Service
+metadata:
+  name: coffee-service
+spec:
+  selector:
+    app: coffee
+  ports:
+    - port: 80
+---
+# 3. The Tea App
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tea-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: tea
+  template:
+    metadata:
+      labels:
+        app: tea
+    spec:
+      containers:
+      - name: tea
+        image: nginxdemos/hello:plain-text
+---
+# 4. The Tea Service (Internal Access)
+apiVersion: v1
+kind: Service
+metadata:
+  name: tea-service
+spec:
+  selector:
+    app: tea
+  ports:
+    - port: 80
